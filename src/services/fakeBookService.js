@@ -134,7 +134,7 @@ export function getBook(id) {
 
 export function saveBook(book) {
   let bookInDb = books.find((b) => b._id === book._id) || {};
-  bookInDb.name = book.name;
+  bookInDb.title = book.title;
   bookInDb.author = authorAPI.authors.find((a) => a._id === book.authorId);
   bookInDb.category = categoryAPI.categories.find(
     (c) => c._id === book.categoryId
@@ -146,7 +146,7 @@ export function saveBook(book) {
   bookInDb.availableBooks = book.availableBooks;
 
   if (!bookInDb._id) {
-    bookInDb._id = Date.now();
+    bookInDb._id = Date.now().toString();
     books.push(bookInDb);
   }
 
