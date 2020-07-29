@@ -1,4 +1,4 @@
-import React from 'react';
+import React, { Component } from 'react';
 import { Route, Switch, Redirect } from 'react-router-dom';
 import { ToastContainer } from 'react-toastify';
 import Books from './components/books';
@@ -12,28 +12,36 @@ import NavBar from './components/navbar';
 import 'react-toastify/dist/ReactToastify.css';
 import './App.css';
 
-function App() {
-  return (
-    <React.Fragment>
-      <ToastContainer />
-      <NavBar />
-      <main className="container">
-        <div className="content">
-          <Switch>
-            <Route path="/books" exact component={Books} />
-            <Route path="/books/:id" component={BookDetails} />
-            <Route path="/customers" component={Customers} />
-            <Route path="/lendings" component={Lendings} />
-            <Route path="/login" component={LoginForm} />
-            <Route path="/register" component={RegisterForm} />
-            <Route path="/not-found" component={NotFound} />
-            <Redirect from="/" to="/books" />
-            <Redirect to="/not-found" />
-          </Switch>
-        </div>
-      </main>
-    </React.Fragment>
-  );
+class App extends Component {
+  state = {};
+
+  componentDidMount() {
+    const jwt = localStorage.getItem('token');
+  }
+
+  render() {
+    return (
+      <React.Fragment>
+        <ToastContainer />
+        <NavBar />
+        <main className="container">
+          <div className="content">
+            <Switch>
+              <Route path="/books" exact component={Books} />
+              <Route path="/books/:id" component={BookDetails} />
+              <Route path="/customers" component={Customers} />
+              <Route path="/lendings" component={Lendings} />
+              <Route path="/login" component={LoginForm} />
+              <Route path="/register" component={RegisterForm} />
+              <Route path="/not-found" component={NotFound} />
+              <Redirect from="/" to="/books" />
+              <Redirect to="/not-found" />
+            </Switch>
+          </div>
+        </main>
+      </React.Fragment>
+    );
+  }
 }
 
 export default App;
