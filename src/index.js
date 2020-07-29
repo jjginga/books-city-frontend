@@ -6,6 +6,9 @@ import * as serviceWorker from './serviceWorker';
 import 'bootstrap/dist/css/bootstrap.css';
 import 'font-awesome/css/font-awesome.css';
 import { BrowserRouter } from 'react-router-dom/cjs/react-router-dom.min';
+import logService from './services/logService';
+
+logService.init();
 
 ReactDOM.render(
   <React.StrictMode>

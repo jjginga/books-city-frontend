@@ -1,10 +1,10 @@
 import React from 'react';
 import Joi from 'joi-browser';
 import Form from './common/form';
-import { getCategories } from '../services/fakeCategoryService';
-import { getAuthors } from '../services/fakeAuthorService';
-import { getPublishers } from '../services/fakePublisherService';
-import { getBook, saveBook } from '../services/fakeBookService';
+import { getCategories } from '../services/categoryService';
+import { getAuthors } from '../services/authorService';
+import { getPublishers } from '../services/publisherService';
+import { getBook, saveBook } from '../services/bookService';
 
 class BookDetails extends Form {
   state = {
@@ -23,22 +23,40 @@ class BookDetails extends Form {
     errors: {},
   };
 
-  componentDidMount() {
-    const authors = getAuthors();
-    const categories = getCategories();
-    const publishers = getPublishers();
+  async populateAuthors() {
+    const { data: authors } = await getAuthors();
+    this.setState({ authors });
+  }
 
-    this.setState({ authors, categories, publishers });
+  async populateCategories() {
+    const { data: categories } = await getCategories();
+    this.setState({ categories });
+  }
 
-    const bookId = this.props.match.params.id;
+  async populatePublishers() {
+    const { data: publishers } = await getPublishers();
+    this.setState({ publishers });
+  }
 
-    if (bookId === 'new') return;
+  async populateBook() {
+    try {
+      const bookId = this.props.match.params.id;
+      if (bookId === 'new') return;
 
-    const book = getBook(bookId);
+      const { data: book } = await getBook(bookId);
+      this.setState({ data: this.mapToViewModel(book) });
+    } catch (error) {
+      if (error.response && error.response.status === 404)
+        this.props.history.replace('/not-found');
+    }
+  }
 
-    if (!book) return this.props.history.replace('/not-found');
+  async componentDidMount() {
+    await this.populateAuthors();
+    await this.populateCategories();
+    await this.populatePublishers();
 
-    this.setState({ data: this.mapToViewModel(book) });
+    await this.populateBook();
   }
 
   mapToViewModel = (book) => {
@@ -61,8 +79,8 @@ class BookDetails extends Form {
     stock: Joi.number().min(1).max(100).required().label('Stock'),
   };
 
-  doSubmit = () => {
-    saveBook(this.state.data);
+  doSubmit = async () => {
+    await saveBook(this.state.data);
     this.props.history.push('/books');
   };
 
@@ -76,7 +94,7 @@ class BookDetails extends Form {
 
     return (
       <div>
-        <h1>Book - {match.params.id} </h1>
+        <h1>Book</h1>
 
         <form onSubmit={this.handleSubmit}>
           {this.renderInput('title', 'Title')}

@@ -1,14 +1,15 @@
 import React, { Component } from 'react';
 import { Link } from 'react-router-dom';
 import _ from 'lodash';
+import { toast } from 'react-toastify';
 
 import BooksTable from './booksTable';
 import ListGroups from './listGroups';
 import Pagination from './common/pagination';
 
 import paginate from '../utils/paginate';
-import { getBooks } from '../services/fakeBookService';
-import { getCategories } from '../services/fakeCategoryService';
+import { getBooks, deleteBook } from '../services/bookService';
+import { getCategories } from '../services/categoryService';
 import SearchBox from './common/searchBox';
 
 class Books extends Component {
@@ -22,24 +23,36 @@ class Books extends Component {
     sortColumn: { path: 'title', order: 'asc' },
   };
 
-  componentDidMount() {
-    const categories = [
-      { _id: '', name: 'All Categories' },
-      ...getCategories(),
-    ];
+  async componentDidMount() {
+    const { data } = await getCategories();
+
+    const categories = [{ _id: '', name: 'All Categories' }, ...data];
+
+    const { data: books } = await getBooks();
 
     this.setState({
-      books: getBooks(),
+      books,
       categories,
     });
   }
 
-  handleDelete = (book) => {
-    this.setState({
-      books: this.state.books.filter((b) => {
-        return b !== book;
-      }),
+  handleDelete = async (book) => {
+    const originalBooks = this.state.books;
+
+    const books = originalBooks.filter((b) => {
+      return b._id !== book._id;
     });
+
+    this.setState({ books });
+
+    try {
+      await deleteBook(book._id);
+    } catch (error) {
+      if (error.response && error.response.status === 404)
+        toast.error('This book has already been deleted.');
+
+      this.setState({ books: originalBooks });
+    }
   };
 
   handleLike = (book) => {
