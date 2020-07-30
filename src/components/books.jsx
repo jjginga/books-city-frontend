@@ -131,6 +131,7 @@ class Books extends Component {
     } = this.state;
 
     const { count, data } = this.getPageData();
+    const { user } = this.props;
 
     return (
       <React.Fragment>
@@ -143,15 +144,16 @@ class Books extends Component {
             />
           </div>
           <div className="col">
-            <p>
+            {user && (
               <Link
                 to="/books/new"
                 className="btn btn-primary"
                 style={{ marginBottom: 20 }}
               >
-                NewMovie
+                New Book
               </Link>
-            </p>
+            )}
+
             <p>{this.renderMessage(count)}</p>
             <SearchBox value={searchQuery} onChange={this.handleSearch} />
             <BooksTable

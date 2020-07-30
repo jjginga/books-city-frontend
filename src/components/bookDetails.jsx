@@ -89,7 +89,7 @@ class BookDetails extends Form {
   };
 
   render() {
-    const { match } = this.props;
+    //const { match } = this.props;
     const { authors, categories, publishers } = this.state;
 
     return (

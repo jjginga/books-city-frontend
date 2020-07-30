@@ -1,8 +1,42 @@
 import http from './httpService';
 import { apiUrl } from '../config/config.json';
+import jwt_decode from 'jwt-decode';
 
 const url = apiUrl + '/auth';
+const tokenKey = 'token';
 
-export function login(email, password) {
-  return http.post(url, { email, password });
+http.setJwt(getJwt());
+
+export async function login(email, password) {
+  const { data: jwt } = await http.post(url, { email, password });
+  localStorage.setItem(tokenKey, jwt);
 }
+
+export function loginWithJwt(jwt) {
+  localStorage.setItem(tokenKey, jwt);
+}
+
+export function logout() {
+  localStorage.removeItem(tokenKey);
+}
+
+export function getCurrentUser() {
+  try {
+    const jwt = localStorage.getItem(tokenKey);
+    return jwt_decode(jwt);
+  } catch (error) {
+    return null;
+  }
+}
+
+export function getJwt() {
+  return localStorage.getItem(tokenKey);
+}
+
+export default {
+  login,
+  loginWithJwt,
+  logout,
+  getCurrentUser,
+  getJwt,
+};
