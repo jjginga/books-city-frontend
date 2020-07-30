@@ -1,7 +1,6 @@
 import http from './httpService';
-import { apiUrl } from '../config/config.json';
 
-const url = apiUrl + '/categories';
+const url = '/categories';
 
 export function getCategories() {
   return http.get(url);

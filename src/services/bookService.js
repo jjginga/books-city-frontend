@@ -1,7 +1,6 @@
 import http from './httpService';
-import { apiUrl } from '../config/config.json';
 
-const url = apiUrl + '/books';
+const url = '/books';
 
 function bookUrl(id) {
   return `${url}/${id}`;

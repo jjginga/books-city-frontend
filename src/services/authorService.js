@@ -1,7 +1,6 @@
 import http from './httpService';
-import { apiUrl } from '../config/config.json';
 
-const url = apiUrl + '/authors';
+const url = '/authors';
 
 export function getAuthors() {
   return http.get(url);

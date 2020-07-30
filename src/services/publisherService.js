@@ -1,7 +1,6 @@
 import http from './httpService';
-import { apiUrl } from '../config/config.json';
 
-const url = apiUrl + '/publishers';
+const url = '/publishers';
 
 export function getPublishers() {
   return http.get(url);
