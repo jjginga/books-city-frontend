@@ -1,4 +1,5 @@
 import React from 'react';
+import { Link } from 'react-router-dom';
 import Joi from 'joi-browser';
 import Form from './common/form';
 import { getCategories } from '../services/categoryService';
@@ -93,18 +94,44 @@ class BookDetails extends Form {
     const { authors, categories, publishers } = this.state;
 
     return (
-      <div>
-        <h1>Book</h1>
+      <React.Fragment>
+        <div className="row pull-right">
+          <Link
+            to="/authors/new"
+            className="btn btn-success"
+            style={{ marginBottom: 20, marginLeft: 20 }}
+          >
+            New Author
+          </Link>
+          <Link
+            to="/categories/new"
+            className="btn btn-success"
+            style={{ marginBottom: 20, marginLeft: 20 }}
+          >
+            New Category
+          </Link>
+          <Link
+            to="/publishers/new"
+            className="btn btn-success"
+            style={{ marginBottom: 20, marginLeft: 20 }}
+          >
+            New Publisher
+          </Link>
+        </div>
 
-        <form onSubmit={this.handleSubmit}>
-          {this.renderInput('title', 'Title')}
-          {this.renderSelect('authorId', 'Author', authors, this.authorName)}
-          {this.renderSelect('categoryId', 'Category', categories)}
-          {this.renderSelect('publisherId', 'Publisher', publishers)}
-          {this.renderInput('stock', 'stock')}
-          {this.renderButton('Save')}
-        </form>
-      </div>
+        <div>
+          <h1>Book</h1>
+
+          <form onSubmit={this.handleSubmit}>
+            {this.renderInput('title', 'Title')}
+            {this.renderSelect('authorId', 'Author', authors, this.authorName)}
+            {this.renderSelect('categoryId', 'Category', categories)}
+            {this.renderSelect('publisherId', 'Publisher', publishers)}
+            {this.renderInput('stock', 'stock')}
+            {this.renderButton('Save')}
+          </form>
+        </div>
+      </React.Fragment>
     );
   }
 }

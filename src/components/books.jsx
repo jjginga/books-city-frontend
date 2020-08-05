@@ -6,11 +6,11 @@ import { toast } from 'react-toastify';
 import BooksTable from './booksTable';
 import ListGroups from './listGroups';
 import Pagination from './common/pagination';
-
+import SearchBox from './common/searchBox';
 import paginate from '../utils/paginate';
+
 import { getBooks, deleteBook } from '../services/bookService';
 import { getCategories } from '../services/categoryService';
-import SearchBox from './common/searchBox';
 
 class Books extends Component {
   state = {
@@ -106,7 +106,9 @@ class Books extends Component {
         b.title.toLowerCase().startsWith(searchQuery.toLowerCase())
       );
     else if (selectedCategory && selectedCategory._id)
-      allBooks.filter((b) => b.category._id === selectedCategory._id);
+      filtered = allBooks.filter(
+        (b) => b.category._id === selectedCategory._id
+      );
 
     const sorted = _.orderBy(filtered, [sortColumn.path], [sortColumn.order]);
 

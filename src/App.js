@@ -5,7 +5,11 @@ import { ToastContainer } from 'react-toastify';
 import Books from './components/books';
 import BookDetails from './components/bookDetails';
 import Lendings from './components/lendings';
-import Customers from './components/customers';
+import Customers from './components/customers/customers';
+import CustomerForm from './components/customers/CustomerForm';
+import AuthorsForm from './components/addForms/AuthorsForm';
+import CategoriesForm from './components/addForms/CategoriesForm';
+import PublishersForm from './components/addForms/PublishersForm';
 import LoginForm from './components/loginForm';
 import RegisterForm from './components/registerForm';
 import Logout from './components/logout';
@@ -42,7 +46,17 @@ class App extends Component {
                 render={(props) => <Books {...props} user={user} />}
               />
               <ProtectedRoute path="/books/:id" component={BookDetails} />
-              <Route path="/customers" component={Customers} />
+              <Route path="/customers" exact component={Customers} />
+              <ProtectedRoute path="/customers/:id" component={CustomerForm} />
+              <ProtectedRoute path="/authors/new" component={AuthorsForm} />
+              <ProtectedRoute
+                path="/categories/new"
+                component={CategoriesForm}
+              />
+              <ProtectedRoute
+                path="/publishers/new"
+                component={PublishersForm}
+              />
               <Route path="/lendings" component={Lendings} />
               <Route path="/login" component={LoginForm} />
               <Route path="/logout" component={Logout} />
